@@ -11,9 +11,8 @@
     }
 
 		private function load_some_snippets(){
-
       $cse_id = '[YOUR_CSE_ID]';
-		  $api_key = '[YOUR_API_KEY]';
+      $api_key = '[YOUR_API_KEY]';
 
 			$url = 'https://customsearch.googleapis.com/customsearch/v1?num=4&cx='.$cse_id.'&q=' 
 				. str_replace(' ','%20',$this->$searchterm).'&key='.$api_key;
