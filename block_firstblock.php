@@ -2,20 +2,19 @@
 
   class block_firstblock extends block_base {
 
-    private $searchterm;
-
     public function init() {
       $this->title = get_string('firstblock', 'block_firstblock');
-      $this->$searchterm = 'Moodle Block';
     }
 
     private function load_some_snippets(){
 
-      $cse_id = '[YOUR_CSE_ID]';
-      $api_key = '[YOUR_API_KEY]';
+      $cse_id = 'YOUR CSE ID';
+      $api_key = 'YOUR API KEY';
 
+      $searchterm = $this->config->title;
+      
       $url = 'https://customsearch.googleapis.com/customsearch/v1?num=4&cx='.$cse_id.'&q=' 
-        . str_replace(' ','%20',$this->$searchterm).'&key='.$api_key;
+        . str_replace(' ','%20',$searchterm).'&key='.$api_key;
       $call = curl_init();
       curl_setopt($call, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($call, CURLOPT_URL,$url);
@@ -32,7 +31,6 @@
         $somesnippets = $somesnippets . '<a href="'.$allresults[$i]['link'].'">'.$allresults[$i]['htmlTitle']  . "</a><br><em>" . $allresults[$i]['htmlSnippet'] . "</em><br>";
       }
 
-      $this->config->title = $this->$searchterm;
       $this->config->text = $somesnippets;
     }
 
@@ -48,18 +46,16 @@
 
     public function specialization() {
       if (isset($this->config)) {
-        if (empty($this->config->title)) {
-            $this->title = get_string('defaulttitle', 'block_simplehtml');
-        } else {
-            $this->title = $this->config->title;
-        }
+        if (empty($this->config->title)) 
+            $this->config->title = get_string('defaulttitle', 'block_firstblock');
+
+        $this->title = $this->config->title;
 
         if (empty($this->config->text)) {
-            $this->config->text = get_string('defaulttext', 'block_simplehtml');
+            $this->config->text = get_string('defaulttext', 'block_firstblock');
         }
-        //$searchterm = get_string('defaulttext', 'block_firstblock');
-        //$this->load_some_snippets();
       }
+
     }
 
     public function instance_allow_multiple() {
